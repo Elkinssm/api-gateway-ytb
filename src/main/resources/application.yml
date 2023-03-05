@@ -1,0 +1,23 @@
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${random.uuid}
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: product-microservice
+          predicates:
+            - Path=/api/products/**, /api/categories/**
+          uri: lb://PRODUCT-MICROSERVICE
+        - id: booking-microservice
+          predicates:
+            - Path=/api/booking/**
+          uri: lb://BOOKING-MICROSERVICE
+    loadbalancer:
+      ribbon:
+        enabled: false
